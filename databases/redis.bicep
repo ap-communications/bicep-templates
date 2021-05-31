@@ -85,7 +85,7 @@ resource diag 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if(di
 
 var endpointName = '${redisCacheName}-endpoint'
 
-module endpoint 'private-endpoint.bicep' = {
+module endpoint '../networks/private-endpoint.bicep' = {
   name: 'inner-deploy-${endpointName}'
   params: {
     name: endpointName
@@ -103,7 +103,7 @@ module endpoint 'private-endpoint.bicep' = {
 
 var redisDomainName = 'privatelink.redis.cache.windows.net'
 
-module dns 'private-dns.bicep' = {
+module dns '../networks/private-dns.bicep' = {
   name: 'inner-deploy-dns-${redisDomainName}'
   params: {
     name: redisDomainName
@@ -111,7 +111,7 @@ module dns 'private-dns.bicep' = {
   }
 }
 
-module dnsGroup 'private-zone-group.bicep' = {
+module dnsGroup '../networks/private-zone-group.bicep' = {
   name: 'inner-dns-group-${redisDomainName}'
   params: {
     name: '${endpointName}/default'

@@ -59,7 +59,7 @@ resource pgsql 'Microsoft.DBForPostgreSQL/servers@2017-12-01' = {
 
 var endpointName = '${name}-endpoint'
 
-module endpoint 'private-endpoint.bicep' = {
+module endpoint '../networks/private-endpoint.bicep' = {
   name: 'inner-deploy-${endpointName}'
   params: {
     name: endpointName
@@ -76,7 +76,7 @@ module endpoint 'private-endpoint.bicep' = {
 }
 
 var postgresDomainName = 'privatelink.postgres.database.azure.com'
-module dns 'private-dns.bicep' = {
+module dns '../networks/private-dns.bicep' = {
   name: 'inner-deploy-dns-${postgresDomainName}'
   params: {
     name: postgresDomainName
@@ -84,7 +84,7 @@ module dns 'private-dns.bicep' = {
   }
 }
 
-module dnsGroup 'private-zone-group.bicep' = {
+module dnsGroup '../networks/private-zone-group.bicep' = {
   name: 'inner-dns-group-${postgresDomainName}'
   params: {
     name: '${endpointName}/default'

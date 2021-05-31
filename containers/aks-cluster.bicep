@@ -38,6 +38,12 @@ param workspaceId string = ''
 param virtualNetworkName string
 @description('query subnet name')
 param subnetName string
+@description('CIDR IP range for services')
+param serviceCidr string = ''
+@description('IP address assigned to the Kubernetes DNS service ')
+param dnsServcieIP string = ''
+@description('CIDR IP range for docker bridge')
+param dockerBridgeCidr string = ''
 @description('tags for aks cluster')
 param tags object = {}
 @allowed([
@@ -96,6 +102,9 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-12-01' = {
       networkPlugin: 'azure'  // use Azure CNI
       networkPolicy: networkPolicy // use Azure Network Policy
       loadBalancerSku: 'standard'
+      serviceCidr: empty(serviceCidr) ? json('null') : serviceCidr
+      dnsServiceIP: empty((dnsServcieIP)) ? json ('null') : dnsServcieIP
+      dockerBridgeCidr: empty(dockerBridgeCidr) ? json('null') : dockerBridgeCidr
     }
     addonProfiles: {
       omsagent: empty(workspaceId) ? json('null') : {
@@ -111,7 +120,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-12-01' = {
 var principalIdForCluster = any(aks.properties.identityProfile.kubeletidentity).objectId
 
 // networking role
-module assignNetworkRole 'assign-subnet-role.bicep' = {
+module assignNetworkRole '../networks/assign-subnet-role.bicep' = {
   name: 'assigning-network-contributor-role-to-${clusterName}'
   params: {
     virtualNetworkName: virtualNetworkName
@@ -122,7 +131,7 @@ module assignNetworkRole 'assign-subnet-role.bicep' = {
 
 // monitor metrics
 var monitoringMetricsPublisherRoleObjectId = '3913510d-42f4-4e42-8a64-420c390055eb'
-module queryMonitorRole 'role-definition.bicep' = {
+module queryMonitorRole '../securites//role-definition.bicep' = {
   name: 'query-${monitoringMetricsPublisherRoleObjectId}'
   params: {
     roleId: monitoringMetricsPublisherRoleObjectId
@@ -143,7 +152,7 @@ resource assignMonitorRole 'Microsoft.Authorization/roleAssignments@2020-04-01-p
 
 // EnsureClusterUserAssignedHasRbacToManageVMS
 var vmContributerRoleObjectId = '9980e02c-c2be-4d73-94e8-173b1dc7cf3c'
-module queryVmContributorRole 'role-definition.bicep' = {
+module queryVmContributorRole '../securites//role-definition.bicep' = {
   name: 'query-${vmContributerRoleObjectId}'
   params: {
     roleId: vmContributerRoleObjectId
