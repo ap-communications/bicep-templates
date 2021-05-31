@@ -21,7 +21,7 @@ resource acr 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = {
 }
 
 var acrPullRoleObjectId = '7f951dda-4ed3-4680-a7ca-43fe172d538d'
-module pullRoleDef 'role-definition.bicep' = {
+module pullRoleDef '../securites/role-definition.bicep' = {
   name: acrPullRoleObjectId
   params: {
     roleId: acrPullRoleObjectId
