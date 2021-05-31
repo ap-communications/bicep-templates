@@ -11,7 +11,7 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2020-08-01' existing 
 
 // networking
 var networkContributorRoleObjectId = '4d97b98b-1d4f-4787-a291-c67834d212e7'
-module queryNetrowkContributorRole '../securites/role-definition.bicep' = {
+module queryNetrowkContributorRole '../generals/role-definition.bicep' = {
   name: 'query-${networkContributorRoleObjectId}'
   params: {
     roleId: networkContributorRoleObjectId

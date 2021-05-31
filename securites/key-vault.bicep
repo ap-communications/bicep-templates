@@ -54,7 +54,7 @@ resource vault 'Microsoft.KeyVault/vaults@2019-09-01' = {
 }
 
 var readerRoleObjectId = 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
-module readerRoleDef 'role-definition.bicep' = {
+module readerRoleDef '../generals/role-definition.bicep' = {
   name: readerRoleObjectId
   params: {
     roleId: readerRoleObjectId
