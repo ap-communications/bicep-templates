@@ -27,7 +27,7 @@ param agentVMSize string = 'Standard_B2s'
 @maxValue(1023)
 param osDiskSizeGB int = 0
 @description('Node resource group name')
-param nodeResourceGroup string = 'MC_${resourceGroup().name}'
+param nodeResourceGroup string = 'MC_${resourceGroup().name}_${clusterName}_${location}'
 @description('service princilal client id')
 param servicePrincipalId string = ''
 @description('service principal secret')
