@@ -4,8 +4,6 @@ param acrName string
 param location string = resourceGroup().location
 @description('sku for ACR')
 param sku string = 'Basic'
-@description('Admin user is enabled')
-param adminUserEnabled bool = false
 @description('tags for container registory')
 param tags object = {}
 @description('target princal id for acr pull role')
