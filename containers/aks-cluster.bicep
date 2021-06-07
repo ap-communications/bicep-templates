@@ -138,7 +138,6 @@ module queryMonitorRole '../generals//role-definition.bicep' = {
   }
 }
 
-var monitoringMetricsPublisherRoleId = queryMonitorRole.outputs.id
 resource assignMonitorRole 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(clusterName, monitoringMetricsPublisherRoleObjectId)
   scope: aks
