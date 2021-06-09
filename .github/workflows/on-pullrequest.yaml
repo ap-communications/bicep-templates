@@ -20,14 +20,19 @@ jobs:
       uses: anthony-c-martin/setup-bicep@v0.1
       with:
         version: v0.4.63
+    - name: Add problem matcher
+      run: |
+        echo "::add-matcher::.github/bicep_linter_error.json"
+        echo "::add-matcher::.github/bicep_linter_warning.json"
     - name: Run Bicep build
       shell: bash
       run: |
         shopt -s globstar
+        exitCode=0
         for file in `ls **/*.bicep`; do
-          bicep build $file
-          status=$?
-          if [ $status -ne 0 ]; then
-            exit $status
+          bicep build $file --stdout > /dev/null
+          if [ $? -ne 0 ]; then
+            exitCode=1
           fi
         done
+        exit $exitCode
