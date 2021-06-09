@@ -1,0 +1,29 @@
+name: Check on pull-request
+on: pull_request
+
+jobs:
+  lint:
+    name: Lint check
+    runs-on: ubuntu-latest
+    steps:
+    - name: Chckout pull request
+      uses: actions/checkout@v2
+    - name: Copy bicep linter configuration for CI
+      shell: bash
+      run: |
+        cp bicepconfig-ci.json bicepconfig.json
+    - name: Setup Bicep
+      uses: anthony-c-martin/setup-bicep@v0.1
+      with:
+        version: v0.4.63
+    - name: Run Bicep build
+      shell: bash
+      run: |
+        shopt -s globstar
+        for file in `ls **/*.bicep`; do
+          bicep build $file
+          status=$?
+          if [ $status -ne 0 ]; then
+            exit $status
+          fi
+        done

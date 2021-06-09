@@ -358,3 +358,6 @@ HELP.md
 
 # local environments
 .envrc
+
+# temporary Bicep configuration
+bicepconfig.json
