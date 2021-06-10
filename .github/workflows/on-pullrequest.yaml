@@ -31,8 +31,5 @@ jobs:
         exitCode=0
         for file in `ls **/*.bicep`; do
           bicep build $file --stdout > /dev/null
-          if [ $? -ne 0 ]; then
-            exitCode=1
-          fi
+          echo "$file checked"
         done
-        exit $exitCode
