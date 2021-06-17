@@ -12,7 +12,7 @@ param location string = resourceGroup().location
 param sku string = 'standard'
 @description('principal id for role assingment')
 param rolePrincipalId string = ''
-@description('access princal ids { id: string, admin: boolean }')
+@description('access principal ids { id: string, admin: boolean }')
 param principalIds array
 @description('set true this is for production')
 param production bool = false
