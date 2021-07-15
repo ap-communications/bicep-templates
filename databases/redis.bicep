@@ -19,6 +19,13 @@ param redisCacheSKU string = 'Standard'
 @description('Specify the family for the sku. C = Basic/Standard, P = Premium.')
 param redisCacheFamily string = 'C'
 
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+@description('Enabled / Disabled public network access')
+param publicNetworkAccess string = 'Disabled'
+
 @minValue(0)
 @maxValue(6)
 @description('Specify the size of the new Azure Redis Cache instance. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4)')
@@ -59,6 +66,7 @@ resource redis 'Microsoft.Cache/Redis@2020-06-01' = {
   location: location
   properties: {
     enableNonSslPort: enableNonSslPort
+    publicNetworkAccess: publicNetworkAccess
     minimumTlsVersion: '1.2'
     sku: {
       capacity: redisCacheCapacity

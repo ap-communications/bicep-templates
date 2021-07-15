@@ -10,7 +10,7 @@ param linkServiceConnections array
 @description('Tag information')
 param tags object = {}
 
-resource endpoint 'Microsoft.Network/privateEndpoints@2020-08-01' = {
+resource endpoint 'Microsoft.Network/privateEndpoints@2020-07-01' = {
   name: name
   location: location
   properties: {
