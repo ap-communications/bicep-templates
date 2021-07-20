@@ -106,8 +106,8 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-12-01' = {
       dnsServiceIP: empty((dnsServcieIP)) ? json ('null') : dnsServcieIP
       dockerBridgeCidr: empty(dockerBridgeCidr) ? json('null') : dockerBridgeCidr
     }
-    addonProfiles: {
-      omsagent: empty(workspaceId) ? json('null') : {
+    addonProfiles: empty(workspaceId) ? json('null') : {
+      omsagent: {
         config: {
           logAnalyticsWorkspaceResourceID: workspaceId
         }
