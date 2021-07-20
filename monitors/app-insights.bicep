@@ -4,14 +4,23 @@ param name string
 param location string = resourceGroup().location
 @description('kind of applications insights')
 param kind string = 'web'
-@description('Application type for inshts')
+@description('Application type for insights')
 @allowed([
   'web'
   'other'
 ])
 param applicationType string = 'web'
+@description('Log analytics workspace name prefix')
+param workspaceNamePrefix string
 @description('tags for resources')
 param tags object = {}
+
+module workspace 'query-workspace.bicep' = {
+  name: 'query-${workspaceNamePrefix}-workspace'
+  params: {
+    workspaceNamePrefix: workspaceNamePrefix
+  }
+}
 
 resource insights 'Microsoft.Insights/components@2020-02-02-preview' = {
   name: name
@@ -19,6 +28,7 @@ resource insights 'Microsoft.Insights/components@2020-02-02-preview' = {
   kind: kind
   properties: {
     Application_Type: applicationType
+    WorkspaceResourceId: workspace.outputs.id
   }
   tags: tags
 }
