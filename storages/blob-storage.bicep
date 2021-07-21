@@ -70,3 +70,6 @@ resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/container
     blobService
   ]
 }
+
+output blobEndpoint string = sa.properties.primaryEndpoints.blob
+output containerName string = containerName
