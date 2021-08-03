@@ -16,6 +16,10 @@ param rolePrincipalId string = ''
 param principalIds array
 @description('set true this is for production')
 param production bool = false
+@description('VMs are permitted to retrieve certificates store as secrets from the key store')
+param enabledForDeployment bool = false
+@description('ARM is permitted to retrieve secrets from the key vault')
+param enabledForTemplateDeployment bool = true
 @description('tags for resource')
 param tags object = {}
 
@@ -39,6 +43,8 @@ resource vault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     }
     createMode: 'default'
     enableSoftDelete: production
+    enabledForDeployment: enabledForDeployment
+    enabledForTemplateDeployment: enabledForTemplateDeployment
     accessPolicies: [ for principal in principalIds: {
       tenantId: tenantId
       objectId: principal.id
