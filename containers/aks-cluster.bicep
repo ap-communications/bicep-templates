@@ -117,7 +117,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-12-01' = {
   }
 }
 
-var principalIdForCluster = any(aks.properties.identityProfile.kubeletidentity).objectId
+var principalIdForCluster = aks.properties.identityProfile.kubeletidentity.objectId
 
 // networking role
 module assignNetworkRole '../networks/assign-subnet-role.bicep' = {
@@ -172,4 +172,4 @@ resource assignVmContributerRole 'Microsoft.Authorization/roleAssignments@2020-0
 output id string = aks.id
 output name string = aks.name
 output apiServerAddress string = aks.properties.fqdn
-output principalId string = any(aks.properties.identityProfile.kubeletidentity).objectId
+output principalId string = aks.properties.identityProfile.kubeletidentity.objectId
