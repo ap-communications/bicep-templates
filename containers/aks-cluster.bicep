@@ -142,10 +142,8 @@ resource assignMonitorRole 'Microsoft.Authorization/roleAssignments@2020-04-01-p
   name: guid(clusterName, monitoringMetricsPublisherRoleObjectId)
   scope: aks
   properties:{
-    principalId: principalIdForCluster
+    principalId: aks.properties.addonProfiles.omsagent.identity.objectId
     roleDefinitionId: queryMonitorRole.outputs.id
-    principalType: 'ServicePrincipal'
-    description: '${clusterName}-MonitringMetricsPublisher'
   }
 }
 
@@ -173,3 +171,4 @@ output id string = aks.id
 output name string = aks.name
 output apiServerAddress string = aks.properties.fqdn
 output principalId string = aks.properties.identityProfile.kubeletidentity.objectId
+output omsAgentObjectId string = aks.properties.addonProfiles.omsagent.identity.objectId
