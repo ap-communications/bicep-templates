@@ -19,7 +19,7 @@ jobs:
     - name: Setup Bicep
       uses: anthony-c-martin/setup-bicep@v0.1
       with:
-        version: v0.4.63
+        version: v0.4.613
     - name: Add problem matcher
       run: |
         echo "::add-matcher::.github/bicep_linter_error.json"
