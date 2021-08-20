@@ -2,6 +2,14 @@
 param name string
 @description('resource location')
 param location string = resourceGroup().location
+@allowed([
+  '11'
+  '10'
+  '10.0'
+  '10.2'
+])
+@description('postgresql server version')
+param version string = '11'
 @description('Administrator user name')
 @secure()
 param adminUser string
@@ -51,6 +59,7 @@ resource pgsql 'Microsoft.DBForPostgreSQL/servers@2017-12-01' = {
   }
   properties: {
     createMode: 'Default'
+    version: version
     publicNetworkAccess: allowPublicAccess ? 'Enabled' : 'Disabled'
     administratorLogin: adminUser
     administratorLoginPassword: adminPassword
