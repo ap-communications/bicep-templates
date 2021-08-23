@@ -53,6 +53,9 @@ param tags object = {}
 @description('network plugin for network policy')
 param networkPolicy string = 'azure'
 
+@description('enable azure policy')
+param enableAzurePolicy bool = true
+
 resource subnet 'Microsoft.Network/virtualNetworks/subnets@2020-08-01' existing = {
   name: '${virtualNetworkName}/${subnetName}'
 }
@@ -112,6 +115,9 @@ resource aks 'Microsoft.ContainerService/managedClusters@2020-12-01' = {
           logAnalyticsWorkspaceResourceID: workspaceId
         }
         enabled: true
+      }
+      azurePolicy: {
+        enabled: enableAzurePolicy
       }
     }
   }
