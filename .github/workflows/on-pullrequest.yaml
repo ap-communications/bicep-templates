@@ -12,20 +12,15 @@ jobs:
     steps:
     - name: Chckout pull request
       uses: actions/checkout@v2
-    - name: Copy bicep linter configuration for CI
-      shell: bash
-      run: |
-        cp bicepconfig-ci.json bicepconfig.json
     - name: Setup Bicep
       uses: anthony-c-martin/setup-bicep@v0.1
       with:
         version: v0.4.613
+    - name: Add problem matcher
+      run: |
+        echo "::add-matcher::.github/matcher/bicep-linter-warning.json"
+        echo "::add-matcher::.github/matcher/bicep-linter-error.json"
     - name: Run Bicep build
       shell: bash
       run: |
-        shopt -s globstar
-        exitCode=0
-        for file in `ls **/*.bicep`; do
-          bicep build $file --stdout > /dev/null
-          echo "$file checked"
-        done
+        bash .github/commands/lint.bash
