@@ -1,17 +1,17 @@
 {
-    "problemMatcher": [
-      {
-        "owner": "bicep-linter-error",
-        "severity": "error",
-        "pattern": [
-          {
-            "regexp": "(^[Ee].+) (/.+\\.bicep)\\((\\d+),(\\d+)\\)\\s:\\s(.*)$",
-            "file": 2,
-            "line": 3,
-            "column": 4,
-            "message": 5
-          }
-        ]
-      }
-    ]
-  }
+  "problemMatcher": [
+    {
+      "owner": "bicep-linter-error",
+      "severity": "error",
+      "pattern": [
+        {
+          "regexp": "(^[Ee].+) (/.+\\.bicep)\\((\\d+),(\\d+)\\)\\s:\\s(.*)$",
+          "file": 2,
+          "line": 3,
+          "column": 4,
+          "message": 5
+        }
+      ]
+    }
+  ]
+}
