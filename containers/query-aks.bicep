@@ -5,6 +5,9 @@ resource cluster 'Microsoft.ContainerService/managedClusters@2020-12-01' existin
   name: name
 }
 
+Error
+Statement
+
 var servicePrincipalProfileClientId = cluster.properties.servicePrincipalProfile.clientId
 output id string = cluster.id
 output principalId string = servicePrincipalProfileClientId == 'msi' ? any(cluster.properties.identityProfile.kubeletidentity).objectId : servicePrincipalProfileClientId
