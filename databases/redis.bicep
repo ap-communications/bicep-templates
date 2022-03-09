@@ -97,6 +97,7 @@ module endpoint '../networks/private-endpoint.bicep' = {
   name: 'inner-deploy-${endpointName}'
   params: {
     name: endpointName
+    location: location
     subnetId: subnet.id
     linkServiceConnections: [
       {
@@ -115,6 +116,7 @@ module dns '../networks/private-dns.bicep' = {
   name: 'inner-deploy-dns-${redisDomainName}'
   params: {
     name: redisDomainName
+    location: location
     vnId: vn.id
   }
 }

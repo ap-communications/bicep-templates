@@ -10,7 +10,7 @@ param location string = resourceGroup().location
 param sku string = 'pergb2018'
 @minValue(1)
 @maxValue(730)
-param retentionDays int = 7
+param retentionDays int = 30
 // Tag information for Log analytics workspace
 param tags object = {}
 
@@ -23,7 +23,7 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2020-10-01'= {
     sku: {
       name: sku
     }
-    retentionInDays: retentionDays
+   retentionInDays: retentionDays
   }
   tags: tags
 }
