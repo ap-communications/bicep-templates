@@ -72,6 +72,7 @@ module endpoint '../networks/private-endpoint.bicep' = {
   name: 'inner-deploy-${endpointName}'
   params: {
     name: endpointName
+    location: location
     subnetId: subnet.id
     linkServiceConnections: [
       {
@@ -89,6 +90,7 @@ module dns '../networks/private-dns.bicep' = {
   name: 'inner-deploy-dns-${postgresDomainName}'
   params: {
     name: postgresDomainName
+    location: location
     vnId: vn.id
   }
 }
