@@ -16,7 +16,7 @@ param tags object = {}
 
 var workspaceName = '${workspaceNamePrefix}-${subscriptionId}'
 
-resource workspace 'Microsoft.OperationalInsights/workspaces@2020-10-01'= {
+resource workspace 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview'= {
   name: workspaceName
   location: location
   properties: {
