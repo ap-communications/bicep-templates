@@ -7,7 +7,7 @@ param workspaceNamePrefix string
 
 var workspaceName = '${workspaceNamePrefix}-${subscriptionId}'
 
-resource workspace 'Microsoft.OperationalInsights/workspaces@2020-10-01' existing = {
+resource workspace 'Microsoft.OperationalInsights/workspaces@2021-12-01-preview' existing = {
   name: workspaceName
 }
 
