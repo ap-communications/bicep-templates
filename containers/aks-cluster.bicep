@@ -144,7 +144,7 @@ module queryMonitorRole '../generals//role-definition.bicep' = {
   }
 }
 
-resource assignMonitorRole 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+resource assignMonitorRole 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = if (!empty(workspaceId)) {
   name: guid(clusterName, monitoringMetricsPublisherRoleObjectId)
   scope: aks
   properties:{
@@ -155,7 +155,7 @@ resource assignMonitorRole 'Microsoft.Authorization/roleAssignments@2020-04-01-p
 
 // EnsureClusterUserAssignedHasRbacToManageVMS
 var vmContributerRoleObjectId = '9980e02c-c2be-4d73-94e8-173b1dc7cf3c'
-module queryVmContributorRole '../generals//role-definition.bicep' = {
+module queryVmContributorRole '../generals/role-definition.bicep' = {
   name: 'query-${vmContributerRoleObjectId}'
   params: {
     roleId: vmContributerRoleObjectId
@@ -177,4 +177,4 @@ output id string = aks.id
 output name string = aks.name
 output apiServerAddress string = aks.properties.fqdn
 output principalId string = aks.properties.identityProfile.kubeletidentity.objectId
-output omsAgentObjectId string = aks.properties.addonProfiles.omsagent.identity.objectId
+output omsAgentObjectId string = empty(workspaceId) ? '' : aks.properties.addonProfiles.omsagent.identity.objectId
