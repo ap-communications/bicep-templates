@@ -22,12 +22,6 @@ param location string = resourceGroup().location
 ])
 @description('access tier of storage account')
 param accessTier string = 'Hot'
-@allowed([
-  'TLS1_0'
-  'TLS1_1'
-  'TLS1_2'
-])
-param minimumTlsVersion string = 'TLS1_2'
 @description('allow public access of blob')
 param allowBlobPublicAccess bool = false
 @description('allow shared key access')
@@ -38,38 +32,39 @@ param isVersioningEnabled bool = true
 @description('resource tags')
 param tags object = {}
 
-resource sa 'Microsoft.Storage/storageAccounts@2021-02-01' = {
-  name: accountName
-  location: location
-  kind: 'StorageV2'
-  sku: {
-    name: skuName
-  }
-  properties: {
+var actualAccountName = replace(accountName, '-', '')
+
+module storageAccount './storage-account.bicep' = {
+  name: 'deploy-storage-account-${actualAccountName}'
+  params: {
+    accountName: actualAccountName
+    location: location
+    kind: 'StorageV2'
+    skuName: skuName
     accessTier: accessTier
-    minimumTlsVersion: minimumTlsVersion
     allowBlobPublicAccess: allowBlobPublicAccess
     allowSharedKeyAccess: allowSharedKeyAccess
+    tags: tags
   }
-  tags: tags
 }
 
 resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2021-02-01' = {
-  name: '${accountName}/default'
+  name: '${actualAccountName}/default'
   properties: {
     isVersioningEnabled: isVersioningEnabled
   }
   dependsOn:[
-    sa
+    storageAccount
   ]
 }
 
 resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-02-01' = {
-  name: '${accountName}/default/${containerName}'
+  name: '${actualAccountName}/default/${containerName}'
   dependsOn:[
     blobService
   ]
 }
 
-output blobEndpoint string = sa.properties.primaryEndpoints.blob
+output accountName string = storageAccount.outputs.accountName
+output blobEndpoint string = storageAccount.outputs.endPoinds.blob
 output containerName string = containerName
